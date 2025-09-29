@@ -1,1 +1,2 @@
-część dalsza ćwiczeń
+/*losowy tekst*/
+część dalsza (przedłużona) ćwiczeń
