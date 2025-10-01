@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/twoj-login/devops-praktyka.git'
+            }
+        }
+
+        stage('Build Docker image') {
+            steps {
+                sh 'docker build -t myapp:jenkins .'
+            }
+        }
+
+        stage('Run container') {
+            steps {
+                sh 'docker run -d --name test_container -p 5001:5000 myapp:jenkins'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // prosty test: sprawdzamy czy serwer odpowiada
+                sh 'sleep 5 && curl -f http://localhost:5001'
+            }
+        }
+
+        stage('Cleanup') {
+            steps {
+                sh 'docker stop test_container || true && docker rm test_container || true'
+            }
+        }
+    }
+}
